@@ -56,14 +56,14 @@ public class Graph<V, E> {
         }
         Node sourceNode = getNode(source);
         Node targetNode = getNode(target);
-        for(Edge edge : getConnectingEdbes(source, target)) {
+        for(Edge edge : getConnectingEdges(source, target)) {
             sourceNode.removeEdge(edge);
             targetNode.removeEdge(edge);
             edges.remove(edge);
         }
     }
 
-    private Set<Edge> getConnectingEdbes(V source, V target) {
+    public Set<Edge> getConnectingEdges(V source, V target) {
         if(source == null || target == null) {
             throw new IllegalArgumentException("Target and source must both be non null values");
         }
@@ -119,6 +119,15 @@ public class Graph<V, E> {
     }
 
     public void addEdge(V source, V target, E edge) {
+        if(source == null || target == null) {
+            throw new IllegalArgumentException("Target and source must both be non null values");
+        }
+        if(!(containsPoint(source) && containsPoint(target))) {
+            throw new ValueNotFoundException("Could not find target or source in the graph");
+        }
+        if(source.equals(target)) {
+            throw new IllegalArgumentException("Cannot link a point to itself");
+        }
         Node sourceNode = getNode(source);
         Node targetNode = getNode(target);
         Edge edgeContainer = new Edge(sourceNode, targetNode, edge);
@@ -148,10 +157,15 @@ public class Graph<V, E> {
         points.remove(node);
         return true;
     }
+    
+    public String toString() {
+        return "Graph with " + points.size() + " points and " + edges.size() + 
+                " edges";
+    }
 
     private class Node {
         private V value;
-        private Set<Edge> edges;
+        private Set<Edge> edges = new HashSet<>();
 
         public Node(V value) {
             this.value = value;
