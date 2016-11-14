@@ -3,6 +3,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Vector;
 import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Graph<V, E> {
 
@@ -100,9 +102,9 @@ public class Graph<V, E> {
         return connecting;
     }
 
-    public Set<E> getEdges(V point) {
+    public List<E> getEdges(V point) {
         Node node = getNode(point);
-        Set<E> edges = new HashSet<>();
+        List<E> edges = new ArrayList<>();
         for(Edge edge : node.getEdges()) {
             edges.add(edge.getValue());
         }
@@ -163,7 +165,7 @@ public class Graph<V, E> {
                 " edges";
     }
 
-    private class Node {
+    protected class Node {
         private V value;
         private Set<Edge> edges = new HashSet<>();
 
@@ -233,7 +235,7 @@ public class Graph<V, E> {
         }
     }
 
-    private class Edge {
+    protected class Edge {
         private E value;
         private Collection<Node> nodes = new Vector<>();
 
@@ -301,3 +303,4 @@ class ValueNotFoundException extends RuntimeException
          super(message);
       }
  }
+ 
